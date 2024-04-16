@@ -1,0 +1,51 @@
+<div class="container text-center">
+    <h1 class="my-4">Reparaciones</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Tipo de Reparación</th>
+                <th *ngIf="rolUsuario === 1">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reparacion of reparaciones">
+                <td>{{ reparacion.id }}</td>
+                <td>{{ reparacion.tipo_reparaciones }}</td>
+                <td >
+                    <button class="btn btn-primary mx-2" (click)="editReparacion(reparacion)" *ngIf="rolUsuario === 1 || rolUsuario === 3">Editar</button>
+                    <button class="btn btn-danger" (click)="deleteReparacion(reparacion.id)" *ngIf="rolUsuario === 1">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <div *ngIf="selectedReparacion; else addReparacionForm">
+        <h2>Editar Reparación</h2>
+        <form [formGroup]="EditForm" (submit)="updateReparacion()" class="container" novalidate>
+            <div class="form-group">
+                <label for="tipo_reparaciones">Tipo de Reparación:</label>
+                <input formControlName="tipo_reparaciones" id="tipo_reparaciones" class="form-control">
+                <div *ngIf="EditForm.get('tipo_reparaciones')?.errors?.['required'] && EditForm.get('tipo_reparaciones')?.touched" class="alert alert-danger">
+                    El tipo de reparación es requerido
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!EditForm.valid">Guardar cambios</button>
+            <button type="button" (click)="cancelEdit()" class="btn btn-secondary">Cancelar</button>
+        </form>
+    </div>
+    
+    <ng-template #addReparacionForm>
+        <h2 *ngIf="rolUsuario === 1 || rolUsuario === 3">Agregar Reparación</h2>
+        <form [formGroup]="newReparacionForm" (submit)="addReparacion(newReparacionForm.value)" class="my-4" *ngIf="rolUsuario === 1 || rolUsuario === 3" novalidate>
+            <input formControlName="tipo_reparaciones" required class="form-control my-2">
+            <div *ngIf="newReparacionForm.get('tipo_reparaciones')?.errors?.['required'] && newReparacionForm.get('tipo_reparaciones')?.touched" class="alert alert-danger">
+                El tipo de reparación es requerido
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!newReparacionForm.valid">Agregar Reparación</button>
+        </form>
+    </ng-template>
+
+    <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+</div>
+

@@ -1,0 +1,42 @@
+.card {
+    background-color: #ffffff; /* Cambia el color de fondo a un gris oscuro */
+    color: #080000; /* Cambia el color del texto a blanco */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #f20000; /* Cambia el color del título a un amarillo dorado */
+}
+
+.card-content {
+    font-size: 1rem;
+}
+
+.card-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.user-details {
+    flex: 1;
+}
+
+.user-name {
+    font-weight: bold;
+    color: #4f4c4c; /* Cambia el color del nombre del usuario a un amarillo dorado */
+}
+
+.user-email {
+    color: #000000;
+}
