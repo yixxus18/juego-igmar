@@ -38,7 +38,7 @@ export class JuegoComponent {
       this.bombasRestantes = 2;
   
       if (this.bombasRestantes > 0) {
-        JuegoComponent.tiempoAnimacion = 2 / Math.pow((this.barcosDestruidos + 1), 5); // Ajusta el cálculo de la velocidad
+        JuegoComponent.tiempoAnimacion = 2 / Math.pow((this.barcosDestruidos + 1), 2); // Ajusta el cálculo de la velocidad
         setTimeout(() => {
           this.toggleAnimation();
         }, 3000); // Ajusta la velocidad de animación
