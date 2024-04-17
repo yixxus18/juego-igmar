@@ -34,7 +34,7 @@
 .message-error {
   text-align: center;
   margin-top: 20px;
-  background-color: #000;
+  background-color: hsl(0, 0%, 0%);
   color: #fff;
   padding: 15px; /* Aumento del padding */
   border-radius: 8px; /* Aumento del radio de borde */
@@ -54,7 +54,7 @@ form {
   width: 320px; /* Ajuste del ancho del formulario */
   padding: 25px; /* Aumento del padding */
   border-radius: 8px;
-  background-color: #000; /* Cambio de color a negro */
+  background-color: #020202; /* Cambio de color a negro */
   box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.15);
 }
 
@@ -71,6 +71,11 @@ input {
   margin-top: 5px;
   background-color: #000;
   color: #fff;
+  font-family: 'Arial', sans-serif; /* Cambio de fuente a Arial */
+}
+
+label {
+  color: #fff; /* Cambio de color de label a blanco */
   font-family: 'Arial', sans-serif; /* Cambio de fuente a Arial */
 }
 
