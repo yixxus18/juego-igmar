@@ -33,7 +33,7 @@ use App\Http\Controllers\CitasController;
 use App\Http\Controllers\IngresoReparacionesController;
 use App\Http\Controllers\LogHistoryController;
 use App\Http\Controllers\ReportesController;
-
+use App\Http\Controllers\PartidaController;
 
 Route::group([
 
@@ -56,6 +56,8 @@ Route::group([
     Route::delete('delete/{id}',[UserController::class,'destroy'])->middleware('authrole')->where('id','[0-9]+');
     Route::put('put/{id}',[UserController::class,'update'])->middleware('authrole2')->where('id','[0-9]+');
 
+    Route::post('/partida', [PartidaController::class, 'store']);
+    Route::get('/partida', [PartidaController::class, 'index']);
 });
 
 

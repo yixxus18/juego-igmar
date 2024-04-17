@@ -14,15 +14,15 @@ class NuevaReparacion implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $reparaciones;
+    public $partida;
 
-    public function __construct($reparaciones)
+    public function __construct($partida)
     {
-        $this->reparaciones = $reparaciones;
+        $this->partida = $partida;
     }
 
     public function broadcastOn()
     {
-        return new Channel('nuevareparacion');
+        return new Channel('nuevapartida');
     }
 }
