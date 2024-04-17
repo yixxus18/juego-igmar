@@ -1,6 +1,14 @@
+<div class="titulo-principal">BARCBOOM</div>
 <div class="menu">
   <button id="jugarBtn" (click)="jugar()">Jugar</button>
-  <button id="scoresBtn"(click)="scores()">Mostrar Scores</button>
+  <button id="scoresBtn" (click)="scores()">Mostrar Scores</button>
+</div>
+<!-- Contenedor para las explosiones -->
+<div class="explosions-container">
+  <div class="particle particle1" style="top: 20%; left: 30%;"></div>
+  <div class="particle particle2" style="top: 50%; left: 80%;"></div>
+  <div class="particle particle3" style="top: 70%; left: 40%;"></div>
+  <!-- Agrega más partículas según sea necesario -->
 </div>
 <div id="loadingAnimation" class="loading-animation"></div>
 

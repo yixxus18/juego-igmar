@@ -1,6 +1,6 @@
 <div style="background-color: blue;" (click)="intentos($event)">
-    <h1>Bombas Restantes: {{ bombasRestantes }}</h1>
-    <h2>Barcos Destruidos: {{ barcosDestruidos }}</h2>
+    <h1 class="h1-guerra">Bombas Restantes: {{ bombasRestantes }}</h1>
+    <h2 class="h2-guerra">Barcos Destruidos: {{ barcosDestruidos }}</h2>
     <div [@slideInOut]="estado" (click)="golpearBarco($event);">
         <router-outlet ></router-outlet>
     </div>

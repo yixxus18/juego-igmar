@@ -1,7 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
 :host {
-    display: block; /* Esto hace que el componente se comporte como un bloque */
-    width: 100vw; /* Esto establece el ancho al 100% del ancho de la ventana del navegador */
-    height: 100vh; /* Esto establece la altura al 100% de la altura de la ventana del navegador */
-    background-color: blue; /* Esto establece el color de fondo del componente */
-    overflow: hidden; /* Esto evita que el contenido se desborde */
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100vw;
+  height: 100vh;
+  background-color: blue;
+  overflow: hidden;
+  padding-top: 20px; /* Agrega espacio en la parte superior */
+}
+
+/* Asegúrate de que el contenido interno también esté centrado si es necesario */
+div:first-child {
+  text-align: center;
+  width: 100%;
+  margin-top: 20px; /* Agrega espacio en la parte superior del primer div */
+}
+
+/* Estilos para los encabezados con temática de guerra */
+.h1-guerra, .h2-guerra {
+    font-family: 'Special Elite', cursive;
+    color: #ccc; /* Color gris claro para simular el aspecto de metal o piedra */
+    text-shadow: 2px 2px 4px #000; /* Sombra negra para dar profundidad */
+    letter-spacing: 2px; /* Espaciado entre letras para un efecto más marcado */
+}
+
+.h1-guerra {
+    font-size: 2.5rem; /* Tamaño de fuente para h1 */
+}
+
+.h2-guerra {
+    font-size: 2rem; /* Tamaño de fuente para h2 */
+}
