@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -28,7 +28,7 @@ export class JuegoComponent {
   barcosDestruidos = 0;
   static tiempoAnimacion: number = 2; // Inicia con 4 segundos
 
-  constructor() {
+  constructor(private elRef: ElementRef) {
     this.toggleAnimation();
   }
 
@@ -38,10 +38,10 @@ export class JuegoComponent {
       this.bombasRestantes = 2;
   
       if (this.bombasRestantes > 0) {
-        JuegoComponent.tiempoAnimacion = 2 / (this.barcosDestruidos + 1);
+        JuegoComponent.tiempoAnimacion = 2 / Math.pow((this.barcosDestruidos + 1), 5); // Ajusta el cálculo de la velocidad
         setTimeout(() => {
           this.toggleAnimation();
-        }, 2100); 
+        }, 3000); // Ajusta la velocidad de animación
       } else {
         this.animacionActiva = false;
         alert('¡No quedan más bombas!');
@@ -64,11 +64,21 @@ export class JuegoComponent {
     }
   }
 
-  intentos(event: Event) {
+  intentos() {
+    
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
     } else {
       alert('¡No te quedan más intentos!');
+    }
+  }
+
+   // Asegúrate de que el ElementRef esté definido
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: MouseEvent) { // Especifica el tipo de event como MouseEvent
+    if (this.elRef.nativeElement.contains(event.target as Node)) {
+      this.intentos();
     }
   }
 }
