@@ -26,7 +26,7 @@ export class JuegoComponent {
   animacionActiva = true;
   bombasRestantes = 2;
   barcosDestruidos = 0;
-  static tiempoAnimacion: number = 6; // Inicia con 4 segundos
+  static tiempoAnimacion: number = 2; // Inicia con 4 segundos
 
   constructor() {
     this.toggleAnimation();
@@ -38,10 +38,10 @@ export class JuegoComponent {
       this.bombasRestantes = 2;
   
       if (this.bombasRestantes > 0) {
-        JuegoComponent.tiempoAnimacion = 6 / (this.barcosDestruidos + 1);
+        JuegoComponent.tiempoAnimacion = 2 / (this.barcosDestruidos + 1);
         setTimeout(() => {
           this.toggleAnimation();
-        }, JuegoComponent.tiempoAnimacion * 1000); // Reinicia la animación después de que termine
+        }, 2100); 
       } else {
         this.animacionActiva = false;
         alert('¡No quedan más bombas!');
