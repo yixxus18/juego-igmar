@@ -1,21 +1,6 @@
-<div class="container" style="text-align: center;">
-    <br>
-    <br>
-    <div class="card">
-        <br>
-        <div class="card-title">Datos del Usuario</div>
-        <div class="card-user-info">
-          <div class="user-details" >
-            <h1>Usuario:</h1>
-            <div class="user-name">{{ userData?.name }}</div>
-            <br>
-            <h1>Correo:</h1>
-            <div class="user-email">{{ userData?.email }}</div>
-          </div>
-        </div>
-        <br>
-        <button (click)="logout()" style="background-color: red; color: white ; ">Logout</button>
-        <br>
-      </div>
-      
+<div id="contenedor">
+  <div class="contenedor-loader">
+    <div class="rueda"></div>
+  </div>
+  <div class="cargando">Cargando...</div>
 </div>

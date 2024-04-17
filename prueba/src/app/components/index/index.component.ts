@@ -47,4 +47,12 @@ export class IndexComponent implements OnInit {
       });
     }
   }
+
+  jugar(): void {
+    this.router.navigate(['/info']);
+  }
+
+  scores(): void {
+    this.router.navigate(['/juego']);
+  }
 }

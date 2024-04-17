@@ -44,7 +44,7 @@ export class LoginComponent {
           localStorage.setItem('token', data.access_token);
           console.log(data.access_token)
           console.log(localStorage.getItem('token'));
-          this.router.navigateByUrl('/index/verificacion', { replaceUrl: true });
+          this.router.navigateByUrl('verificacion', { replaceUrl: true });
         },
         error: error => {
           console.log(error.error.msg);

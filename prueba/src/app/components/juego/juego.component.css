@@ -1,0 +1,7 @@
+:host {
+    display: block; /* Esto hace que el componente se comporte como un bloque */
+    width: 100vw; /* Esto establece el ancho al 100% del ancho de la ventana del navegador */
+    height: 100vh; /* Esto establece la altura al 100% de la altura de la ventana del navegador */
+    background-color: blue; /* Esto establece el color de fondo del componente */
+    overflow: hidden; /* Esto evita que el contenido se desborde */
+  }

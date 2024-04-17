@@ -1,42 +1,39 @@
-.card {
-    background-color: #ffffff; /* Cambia el color de fondo a un gris oscuro */
-    color: #080000; /* Cambia el color del texto a blanco */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+@import url('//fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap');
+
+body{ 
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+#contenedor{ 
+  background-color: #00b8de; 
+  display: grid;
+  place-content: center;
+  height: 100vh;
+  color: #000;
+}
+.cargando{ 
+  position: relative; 
+  color: #FFF;
+  margin-top: 2em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase
 }
 
-.card-title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #f20000; /* Cambia el color del título a un amarillo dorado */
+.rueda {
+  border: 10px solid rgba(255, 255, 255, .3);
+  border-radius: 50%;
+  border-left-color: transparent;
+  width: 80px;
+  height: 80px;
+  animation: giro 1s linear infinite;
 }
 
-.card-content {
-    font-size: 1rem;
-}
+@keyframes giro {
+  0% {
+    transform: rotate(0deg);
+  }
 
-.card-user-info {
-    display: flex;
-    align-items: center;
-}
-
-.user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-}
-
-.user-details {
-    flex: 1;
-}
-
-.user-name {
-    font-weight: bold;
-    color: #4f4c4c; /* Cambia el color del nombre del usuario a un amarillo dorado */
-}
-
-.user-email {
-    color: #000000;
+  100% {
+    transform: rotate(360deg);
+  }
 }

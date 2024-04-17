@@ -40,7 +40,7 @@ export class RegisterComponent {
           this.messageService.updateMessage('Registro exitoso. Se ha enviado un correo de verficiacion a tu correo. Verifica tu cuenta para iniciar sesion');
           this.registerMessage = 'Registro exitoso. Por favor, inicie sesión.';
           this.state = true;
-          this.router.navigate(['/login']);  // Redirige al usuario a '/login'
+          this.router.navigate(['login']);  // Redirige al usuario a '/login'
         },
         error: error => {
           console.log(error);
