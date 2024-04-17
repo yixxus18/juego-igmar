@@ -5,11 +5,11 @@ body{
   font-weight: 900;
 }
 #contenedor{ 
-  background-color: #00b8de; 
+  background-color: #000000; 
   display: grid;
   place-content: center;
   height: 100vh;
-  color: #000;
+  color: #ffffff;
 }
 .cargando{ 
   position: relative; 
@@ -20,7 +20,7 @@ body{
 }
 
 .rueda {
-  border: 10px solid rgba(255, 255, 255, .3);
+  border: 10px solid rgb(255, 255, 255);
   border-radius: 50%;
   border-left-color: transparent;
   width: 80px;
