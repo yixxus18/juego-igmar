@@ -1,0 +1,47 @@
+/* Estilo para hacer la tabla más pequeña y centrada */
+
+table {
+    width: 50%; /* Ancho del 50% para hacerla más pequeña */
+    margin: 0 auto; /* Centrar la tabla horizontalmente */
+    border-collapse: collapse;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+}
+
+th, td {
+    border: 1px solid #fff; /* Borde blanco */
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #333; /* Fondo gris oscuro para encabezados */
+}
+
+tr:nth-child(even) {
+    background-color: #666; /* Fondo gris para filas pares */
+}
+
+tr:nth-child(odd) {
+    background-color: #999; /* Fondo gris claro para filas impares */
+}
+
+tbody tr:hover {
+    background-color: #888; /* Cambio de color al pasar el cursor sobre la fila */
+}
+/* Estilo para centrar el botón de redirección */
+
+button {
+    padding: 10px 20px; /* Padding para espacio interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #333; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    cursor: pointer; /* Cambio de cursor al pasar sobre el botón */
+    display: block; /* Mostrar como bloque para centrar */
+    margin: 0 auto; /* Centrar horizontalmente */
+}
+
+button:hover {
+    background-color: #555; /* Cambio de color al pasar el cursor sobre el botón */
+}
