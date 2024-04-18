@@ -45,7 +45,12 @@ export class InfoComponent implements OnInit {
       console.log(e);
       if (e.partida.player2_id) {
         // Redirigir a otra página si la partida tiene dos jugadores
-        this.router.navigate(['/juego']);
+        setTimeout(() => {
+          this.router.navigate(['/juego']); // Redirigir al juego component después de dos segundos
+        }, 2000);
+      }
+      else {
+
       }
     });
 
@@ -96,6 +101,10 @@ export class InfoComponent implements OnInit {
       this.PartidaService.createPartida(token).subscribe(
         response => {
           console.log(response);
+          if (response === "Partida encontrada") {
+            this.router.navigate(['/juego']); 
+            
+          }
         },
         error => {
           console.error(error);

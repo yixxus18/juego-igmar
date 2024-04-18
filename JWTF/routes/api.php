@@ -34,6 +34,7 @@ use App\Http\Controllers\IngresoReparacionesController;
 use App\Http\Controllers\LogHistoryController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\PartidaController;
+use App\Http\Controllers\JuegoController;
 
 Route::group([
 
@@ -58,6 +59,12 @@ Route::group([
 
     Route::post('/partida', [PartidaController::class, 'store']);
     Route::get('/partida', [PartidaController::class, 'index']);
+
+
+    Route::get('/juegos', [JuegoController::class, 'index']);
+   Route::post('/juegos', [JuegoController::class, 'store']);
+
+   Route::put('/juegos/{id}', [JuegoController::class, 'update']);
 });
 
 

@@ -25,6 +25,7 @@ class PartidaController extends Controller
         $partida->player2_id = $user->id;
         $partida->save();
         event(new NuevaReparacion($partida));
+        return response()->json(["Partida encontrada"], 200);
     } else {
         // Si no hay una partida disponible, crear una nueva
         $partida = new Partida();
