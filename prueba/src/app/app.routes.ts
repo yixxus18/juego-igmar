@@ -13,6 +13,7 @@ export const routes: Routes = [
   { path: 'register', loadComponent:()=>import('./components/users/register/register.component').then(m=>m.RegisterComponent),canActivate: [RemoveTokenGuard]},
   { path: 'verificacion', loadComponent:()=>import('./components/verificacion/verificacion/verificacion.component').then(m=>m.VerificacionComponent)},
   { path: 'index', loadComponent:()=>import('./components/index/index.component').then(m=>m.IndexComponent)},
+  { path: 'results', loadComponent:()=>import('./componentes/resultados-partida/resultados-partida.component').then(m=>m.ResultadosPartidaComponent)},
   { path: 'info', loadComponent:()=>import('./components/info/info.component').then(m=>m.InfoComponent)},
   {
     path: 'juego',

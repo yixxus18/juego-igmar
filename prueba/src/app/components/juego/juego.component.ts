@@ -40,7 +40,7 @@ export class JuegoComponent implements OnInit {
   echo: Echo | undefined;
 
   constructor(private elRef: ElementRef, private router: Router, private PartidaService: PartidaService, private loginService: LoginService) {
-    this.toggleAnimation();
+    
   }
 
   setupWebSocket(): void {
@@ -63,15 +63,28 @@ export class JuegoComponent implements OnInit {
       
       console.log(this.idJugador);
     
-      if (this.idJugador === this.e.juego.jugador1_id && this.e.juego.turno === 1) {
+      if (this.esMiTurno()) {
         this.animacionActiva = true;
-        console.log(this.animacionActiva);
-      } else if (this.idJugador === this.e.juego.jugador2_id && this.e.juego.turno === 0) {
-        this.animacionActiva = true;
-        console.log(this.animacionActiva)
+        this.toggleAnimation();
       }
+
+      if (this.e.juego.barcos_destruidos_jugador1 === 6){
+        this.reiniciarJuego();
+        this.router.navigate(['index']);
+      }
+
+      if (this.e.juego.barcos_destruidos_jugador2 === 6){
+        this.reiniciarJuego();
+        this.router.navigate(['index']);
+      }
+
     });
     
+  }
+
+  esMiTurno(): boolean {
+    return (this.idJugador === this.e.juego.jugador1_id && this.e.juego.turno === 1) ||
+           (this.idJugador === this.e.juego.jugador2_id && this.e.juego.turno === 0);
   }
 
   closeWebSocket(): void {
@@ -102,11 +115,10 @@ export class JuegoComponent implements OnInit {
           if (this.idJugador === this.e.juego.jugador1_id && this.e.juego.turno === 1) {
             this.datosActualizar = { turno: 0 };
             this.actualizarPartida();
-            this.animacionActiva = false; 
           } else if (this.idJugador === this.e.juego.jugador2_id && this.e.juego.turno === 0) {
             this.datosActualizar = { turno: 1 };
             this.actualizarPartida();
-            this.animacionActiva = false; 
+            
           } else {
             this.animacionActiva = false;
             clearInterval(interval); // Detener el bucle si no se cumple ninguna condición
@@ -118,17 +130,45 @@ export class JuegoComponent implements OnInit {
       }, 6000);
     }
   }
-  
 
   golpearBarco(event: Event) {
     event.stopPropagation();
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
       this.barcosDestruidos += 1;
+      if (this.idJugador === this.e.juego.jugador1_id) {
+        this.datosActualizar = { barcos_destruidos_jugador1: this.barcosDestruidos };
+      this.actualizarPartida();
+      }
+
+      if (this.idJugador === this.e.juego.jugador2_id) {
+        this.datosActualizar = { barcos_destruidos_jugador2: this.barcosDestruidos };
+        this.actualizarPartida();
+      }
+      
       if (this.barcosDestruidos === 6) {
+        
+        if (this.idJugador === this.e.juego.jugador1_id) {
+          this.datosActualizar = { barcos_destruidos_jugador1: 6 };
+        this.actualizarPartida();
+        }
+  
+        if (this.idJugador === this.e.juego.jugador2_id) {
+          this.datosActualizar = { barcos_destruidos_jugador2: 6 };
+          this.actualizarPartida();
+        }
         alert('¡Ganaste!');
+        this.reiniciarJuego();
+        this.router.navigate(['index']);
       } else {
         alert('¡Has golpeado el barco!');
+      }
+
+      if (this.e.juego.barcos_destruidos_jugador1 === 6 || this.e.juego.barcos_destruidos_jugador1 === 6 ){
+        alert('Se acabo el juego');
+        this.reiniciarJuego();
+        this.router.navigate(['index']);
+
       }
     } else {
       alert('¡No te quedan más intentos!');
@@ -214,6 +254,15 @@ export class JuegoComponent implements OnInit {
         }
       );
     }
+  }
+
+  reiniciarJuego(): void {
+    this.estado = 'enter'; // O el estado inicial que desees para la animación
+    this.animacionActiva = true; // Dependiendo de si quieres que la animación esté activa al inicio
+    this.bombasRestantes = 2;
+    this.barcosDestruidos = 0;
+    JuegoComponent.tiempoAnimacion = 2; // Restablece a la velocidad inicial si es necesario
+    // Cualquier otra variable que necesites reiniciar
   }
 
 }

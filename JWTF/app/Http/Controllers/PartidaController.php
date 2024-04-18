@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Juego;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -41,6 +42,37 @@ public function index(Request $request)
 {
   $data=Partida::all()->toArray();
   return response()->json($data, 200);
+}
+
+public function resultados(Request $request)
+{
+    $user = Auth::user(); // Obtener el usuario autenticado a partir del token
+
+    if (!$user) {
+        return response()->json(["msg" => "Usuario no encontrado"], 404);
+    }
+    
+    $partidas = Juego::with(['jugador1', 'jugador2']) // Cargar las relaciones para evitar N+1 queries
+                    ->where(function($query) use ($user) {
+                        $query->where('jugador1_id', $user->id)
+                              ->orWhere('jugador2_id', $user->id);
+                    })
+                    ->where(function($query) {
+                        $query->where('barcos_destruidos_jugador1', 6)
+                              ->orWhere('barcos_destruidos_jugador2', 6);
+                    })
+                    ->get();
+
+    $resultados = $partidas->map(function ($partida) {
+        $ganador = $partida->barcos_destruidos_jugador1 > $partida->barcos_destruidos_jugador2 ? $partida->jugador1 : $partida->jugador2;
+        return [
+            'jugador1_nombre' => $partida->jugador1->name, // Asumiendo que el campo se llama 'name'
+            'jugador2_nombre' => $partida->jugador2->name,
+            'ganador_nombre' => $ganador->name,
+        ];
+    });
+
+    return response()->json($resultados, 200);
 }
 
 }

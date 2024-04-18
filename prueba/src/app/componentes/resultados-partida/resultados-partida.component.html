@@ -1,0 +1,16 @@
+<table>
+    <thead>
+      <tr>
+        <th>Jugador 1 </th>
+        <th>Jugador 2 </th>
+        <th>Ganador </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let resultado of resultados">
+        <td>{{ resultado.jugador1_nombre }}</td>
+        <td>{{ resultado.jugador2_nombre }}</td>
+        <td>{{ resultado.ganador_nombre }}</td>
+      </tr>
+    </tbody>
+  </table>

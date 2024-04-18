@@ -53,6 +53,6 @@ export class IndexComponent implements OnInit {
   }
 
   scores(): void {
-    this.router.navigate(['/juego']);
+    this.router.navigate(['/results']);
   }
 }

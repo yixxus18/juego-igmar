@@ -62,6 +62,7 @@ Route::group([
 
 
     Route::get('/juegos', [JuegoController::class, 'index']);
+    Route::get('/resultados', [PartidaController::class, 'resultados']);
    Route::post('/juegos', [JuegoController::class, 'store']);
 
    Route::put('/juegos/{id}', [JuegoController::class, 'update']);

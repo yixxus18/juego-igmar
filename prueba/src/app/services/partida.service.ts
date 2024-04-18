@@ -43,4 +43,11 @@ export class PartidaService {
     return this.http.put<any>(`${this.apiUrl}/juegos/${id}`, datos, { headers });
   }
 
+  obtenerResultados(token:string): Observable<any[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/resultados`, { headers });
+  }
+
 }
