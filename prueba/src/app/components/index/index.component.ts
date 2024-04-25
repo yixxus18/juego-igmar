@@ -19,24 +19,7 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserRole();
   }
-  logout(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.authService.logout(token).subscribe({
-        next: () => {
-          this.authService.removeToken();
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error(error);
-          this.authService.removeToken();
-          this.router.navigate(['/login']);
-        }
-      });
-    } else {
-      this.router.navigate(['/login']);
-    }
-  }
+  
   rolUsuario: number = 0;
   loadUserRole(): void {
     const token = localStorage.getItem('token');
@@ -49,10 +32,14 @@ export class IndexComponent implements OnInit {
   }
 
   jugar(): void {
-    this.router.navigate(['/info']);
+    this.router.navigateByUrl('/info', { replaceUrl: true });
   }
 
   scores(): void {
     this.router.navigate(['/results']);
+  }
+
+  logout(): void {
+    this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }

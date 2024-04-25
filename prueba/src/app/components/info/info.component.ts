@@ -102,7 +102,7 @@ export class InfoComponent implements OnInit {
         response => {
           console.log(response);
           if (response === "Partida encontrada") {
-            this.router.navigate(['/juego']); 
+            this.router.navigateByUrl('/juego', { replaceUrl: true });
             
           }
         },

@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-      Schema::create('accesorios',function (Blueprint $table){
-      $table->id();
-      $table->String('nombre');
-      $table->String('descripcion');
-      $table->integer('precio');
-      $table->integer('cantidad');
-      $table->foreignId('categoria')->constrained()->onDelete('cascade');
-      });
+        Schema::create('roles',function(Blueprint $table){
 
+            $table->id();
+            $table->string('rol');
+        });
     }
 
     /**
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accesorios');
+        Schema::dropIfExists('roles');
     }
 };

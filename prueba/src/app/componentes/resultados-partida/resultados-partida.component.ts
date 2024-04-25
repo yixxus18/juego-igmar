@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LoginService } from '../../services/login.service';
 import { User } from '../../Interfaces/user-interface';
 import { Token } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resultados-partida',
@@ -15,7 +16,7 @@ import { Token } from '@angular/compiler';
 export class ResultadosPartidaComponent {
   resultados: any[] = [];
   userData: User | null = null;
-  constructor(private partidaService: PartidaService, private loginService: LoginService) { }
+  constructor(private partidaService: PartidaService, private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -42,5 +43,8 @@ export class ResultadosPartidaComponent {
       );
       
     }
+  }
+  index(){
+    this.router.navigate(['/index']);
   }
 }

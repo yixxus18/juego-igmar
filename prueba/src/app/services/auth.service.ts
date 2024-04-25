@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private verifyTokenUrl = 'http://192.168.1.8:8000/api/auth/verify';
+  private verifyTokenUrl = `${environment.apiUrl}/verify`;
 
   constructor(private http: HttpClient) {}
 
@@ -14,15 +15,14 @@ export class AuthService {
     return this.http.post<any>(this.verifyTokenUrl, { token });
   }
 
-  apiUrl = 'http://192.168.1.8:8000/api/auth';
 
   verificarCodigo(verificacion: string, token: string): Observable<any> {
-    const url = `${this.apiUrl}/verificar`;
+    const url = `${environment.apiUrl}/verificar`;
     return this.http.post<any>(url, { verificacion, token });
   }
 
   logout(token: string): Observable<any> {
-    const url = `${this.apiUrl}/logout`;
+    const url = `${environment.apiUrl}/logout`;
     return this.http.post<any>(url, { token });
   }
 

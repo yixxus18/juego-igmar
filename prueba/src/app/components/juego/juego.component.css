@@ -1,94 +1,115 @@
 .barco {
-    position: absolute;
-    top: 135px;
-    left: 220px;
-    z-index: 1;
-    animation: navega .5s infinite alternate ease-in-out;
-  }
-  
-  
-  .b-1 {
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-bottom: 50px solid #c91010;
-  }
-  .b-2 {
-    position: absolute;
-    top: 0px;
-    left: 50px;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-top: 50px solid #dd1818;
-  }
-  .b-3 {
-    position: absolute;
-    top: 0px;
-    left: -50px;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-top: 50px solid #d61919;
-  }
-  .b-4 {
-    position: absolute;
-    top: -50px;
-    left: 0px;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-bottom: 50px solid #d21c1c;
-  }
-  .bandeira {
-    position: absolute;
-    top: -90px;
-    left: 50px;
-    width: 2px;
-    height: 45px;
-    background: #fff;
-  }
-  
-  .bandeira::after {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 35px solid #e17911;
-    content:"";
-    animation: voaa 1s infinite alternate ease-in-out;
-    transform-style: preserve-3d;
-    transform: rotateY(35deg);
-    z-index: -1;
-  }
-  
-  @keyframes voaa {
-    50%   {transform: translatey(0px)}
-    50% {transform: translatey(0px)}
-  }
-  .sombra {
-    width: 120px;
-    height: 8px;
-    background: #000;
-    opacity: 0.1;
-    position: absolute;
-    top: 184px;
-    left: 213px;
-    border-radius: 50%;
-    animation: shadow .5s infinite alternate ease-in-out;
-  }
-  
-  @keyframes navega {
-    0%   {transform: translateY(-2px)}
-    100% {transform: translateY(2px)}
-  }
-  
-  @keyframes shadow {
-      0% {transform: scaleX(1)}
-      100% {transform: scaleX(1.2)}
-  }
+  position: absolute;
+  top: 135px;
+  left: 220px;
+  z-index: 1;
+}
 
-  :host {
-    display: block; /* Esto hace que el componente se comporte como un bloque */
-    width: 100vw; /* Esto establece el ancho al 100% del ancho de la ventana del navegador */
-    height: 100vh; /* Esto establece la altura al 100% de la altura de la ventana del navegador */
-    background-color: rgb(6, 12, 36); /* Esto establece el color de fondo del componente */
-    overflow: hidden; /* Esto evita que el contenido se desborde */
-  }
+.b-1 {
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 50px solid #c91010;
+}
+.b-2 {
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 50px solid #dd1818;
+}
+.b-3 {
+  position: absolute;
+  top: 0px;
+  left: -50px;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 50px solid #d61919;
+}
+.b-4 {
+  position: absolute;
+  top: -50px;
+  left: 0px;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 50px solid #d21c1c;
+}
+.bandeira {
+  position: absolute;
+  top: -90px;
+  left: 50px;
+  width: 2px;
+  height: 45px;
+  background: #fff;
+}
+
+.bandeira::after {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 35px solid #e17911;
+  content:"";
+  animation: voaa 1s infinite alternate ease-in-out;
+  transform-style: preserve-3d;
+  transform: rotateY(35deg);
+  z-index: -1;
+}
+
+@keyframes voaa {
+  50%   {transform: translatey(0px)}
+  50% {transform: translatey(0px)}
+}
+.sombra {
+  width: 120px;
+  height: 8px;
+  background: #000;
+  opacity: 0.1;
+  position: absolute;
+  top: 184px;
+  left: 213px;
+  border-radius: 50%;
+  animation: shadow .5s infinite alternate ease-in-out;
+}
+
+@keyframes navega {
+  0%   {transform: translateY(-2px)}
+  100% {transform: translateY(2px)}
+}
+
+@keyframes shadow {
+  0% {transform: scaleX(1)}
+  100% {transform: scaleX(1.2)}
+}
+
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(6, 12, 36);
+  overflow: hidden;
+}
+
+h1, h2 {
+  font-family: 'Special Elite', Courier, monospace;
+  text-align: center;
+  font-size: 3em;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px #000000;
+  margin-top: 20px;
+}
+
+/* Aquí están las nuevas clases de animación */
+@keyframes slideInOut {
+0% { transform: translateX(-100%); }
+100% { transform: translateX(100%); }
+}
+
+.slideInOut2s {
+animation: slideInOut 2s ease-out infinite alternate;
+}
+
+.slideInOut1s {
+animation: slideInOut 1s ease-out infinite alternate;
+}

@@ -6,13 +6,14 @@ import Pusher from 'pusher-js';
 import { PartidaService } from '../../services/partida.service';
 import { LoginService } from '../../services/login.service';
 import { User } from '../../Interfaces/user-interface';
-
+import { ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-juego',
   standalone: true,
   templateUrl: './juego.component.html',
   styleUrls: ['./juego.component.css'],
-  imports: [RouterModule],
+  imports: [RouterModule,CommonModule],
   animations: [
     trigger('slideInOut', [
       state('enter', style({ transform: 'translateX(-100%)', display: 'block' })),
@@ -38,8 +39,9 @@ export class JuegoComponent implements OnInit {
   userData: User | null = null;
   e: any;
   echo: Echo | undefined;
+explosion = false;
 
-  constructor(private elRef: ElementRef, private router: Router, private PartidaService: PartidaService, private loginService: LoginService) {
+  constructor(private elRef: ElementRef, private router: Router, private PartidaService: PartidaService, private loginService: LoginService ,  private cdRef: ChangeDetectorRef) {
     
   }
 
@@ -70,11 +72,13 @@ export class JuegoComponent implements OnInit {
 
       if (this.e.juego.barcos_destruidos_jugador1 === 6){
         this.reiniciarJuego();
+        alert('Se acabo el juego!');
         this.router.navigate(['index']);
       }
 
       if (this.e.juego.barcos_destruidos_jugador2 === 6){
         this.reiniciarJuego();
+        alert('Se acabo el juego!');
         this.router.navigate(['index']);
       }
 
@@ -103,75 +107,59 @@ export class JuegoComponent implements OnInit {
     this.closeWebSocket();
   }
 
+  onAnimationDone(): void {
+    this.explosion = false;
+    this.barcoGolpeado = false;
+    if (this.idJugador === this.e.juego.jugador1_id) {
+      this.datosActualizar = { turno: 0 , barcos_destruidos_jugador1: this.barcosDestruidos };
+    } else if (this.idJugador === this.e.juego.jugador2_id) {
+      this.datosActualizar = { turno: 1 , barcos_destruidos_jugador2: this.barcosDestruidos};
+    }
+
+    this.actualizarPartida();
+
+    this.animacionActiva = true;
+  }
+
   toggleAnimation() {
     if (this.animacionActiva) {
       this.estado = this.estado === 'enter' ? 'exit' : 'enter';
       this.bombasRestantes = 2;
-  
-      const interval = setInterval(() => {
-        if (this.barcosDestruidos < 6) {
-          JuegoComponent.tiempoAnimacion = 2 / Math.pow((this.barcosDestruidos + 1), 2);
-  
-          if (this.idJugador === this.e.juego.jugador1_id && this.e.juego.turno === 1) {
-            this.datosActualizar = { turno: 0 };
-            this.actualizarPartida();
-          } else if (this.idJugador === this.e.juego.jugador2_id && this.e.juego.turno === 0) {
-            this.datosActualizar = { turno: 1 };
-            this.actualizarPartida();
-            
-          } else {
-            this.animacionActiva = false;
-            clearInterval(interval); // Detener el bucle si no se cumple ninguna condición
-          }
-        } else {
-          this.animacionActiva = false;
-          clearInterval(interval); // Detener el bucle si se alcanza la condición de victoria
-        }
-      }, 6000);
     }
   }
 
+  barcoGolpeado = false;
+
   golpearBarco(event: Event) {
+
+    if (this.barcoGolpeado) {
+      return; // Si el barco ya ha sido golpeado, no hagas nada
+    }
+  
+    this.barcoGolpeado = true;
+    this.explosion = true;
     event.stopPropagation();
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
       this.barcosDestruidos += 1;
-      if (this.idJugador === this.e.juego.jugador1_id) {
-        this.datosActualizar = { barcos_destruidos_jugador1: this.barcosDestruidos };
-      this.actualizarPartida();
-      }
-
-      if (this.idJugador === this.e.juego.jugador2_id) {
-        this.datosActualizar = { barcos_destruidos_jugador2: this.barcosDestruidos };
-        this.actualizarPartida();
-      }
+      
       
       if (this.barcosDestruidos === 6) {
         
-        if (this.idJugador === this.e.juego.jugador1_id) {
-          this.datosActualizar = { barcos_destruidos_jugador1: 6 };
-        this.actualizarPartida();
-        }
-  
-        if (this.idJugador === this.e.juego.jugador2_id) {
-          this.datosActualizar = { barcos_destruidos_jugador2: 6 };
-          this.actualizarPartida();
-        }
+        
         alert('¡Ganaste!');
-        this.reiniciarJuego();
+        
         this.router.navigate(['index']);
       } else {
-        alert('¡Has golpeado el barco!');
+        
       }
 
       if (this.e.juego.barcos_destruidos_jugador1 === 6 || this.e.juego.barcos_destruidos_jugador1 === 6 ){
-        alert('Se acabo el juego');
-        this.reiniciarJuego();
-        this.router.navigate(['index']);
 
+        this.router.navigate(['index']);
       }
     } else {
-      alert('¡No te quedan más intentos!');
+      
     }
   }
 
@@ -180,11 +168,11 @@ export class JuegoComponent implements OnInit {
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
     } else {
-      alert('¡No te quedan más intentos!');
+      
     }
   }
 
-   // Asegúrate de que el ElementRef esté definido
+   
 
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) { // Especifica el tipo de event como MouseEvent
@@ -257,12 +245,11 @@ export class JuegoComponent implements OnInit {
   }
 
   reiniciarJuego(): void {
-    this.estado = 'enter'; // O el estado inicial que desees para la animación
-    this.animacionActiva = true; // Dependiendo de si quieres que la animación esté activa al inicio
+    this.estado = 'enter'; 
+    this.animacionActiva = true;
     this.bombasRestantes = 2;
     this.barcosDestruidos = 0;
-    JuegoComponent.tiempoAnimacion = 2; // Restablece a la velocidad inicial si es necesario
-    // Cualquier otra variable que necesites reiniciar
+    JuegoComponent.tiempoAnimacion = 2;
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PartidaGanadaPorDesconexion;
 use App\Models\Juego;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,4 +76,10 @@ public function resultados(Request $request)
     return response()->json($resultados, 200);
 }
 
+
+    // Este es un ejemplo conceptual, necesitarás adaptarlo a tu lógica de aplicación
+public function jugadorSeDesconecto($jugadorId, $partidaId)
+{
+    event(new PartidaGanadaPorDesconexion($partidaId));
+}
 }

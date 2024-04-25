@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
+interface environment {
+  apiUrl: string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class PartidaService {
   constructor(private http: HttpClient) {}
-  private apiUrl = 'http://192.168.1.8:8000/api/auth';
+  private apiUrl = environment.apiUrl;
   getPartidas(token: string): Observable<any>{
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

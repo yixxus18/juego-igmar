@@ -17,7 +17,10 @@
 <div style="background-color: rgb(0, 0, 0);" (click)="intentos()" class="container">
     <h1>Bombas Restantes: {{ bombasRestantes }}</h1>
     <h2>Barcos Destruidos: {{ barcosDestruidos }}</h2>
-    <div [@slideInOut]="estado">
+    <div *ngIf="explosion">
+        <img src="assets/bomba.png" alt="Explosión" style="width: 100px; height: 100px;">
+    </div>
+    <div [@slideInOut]="estado" (@slideInOut.done)="onAnimationDone()">
         <div class="barco"  (click)="golpearBarco($event); $event.stopPropagation();">
             <div class="b-1"></div>
             <div class="b-2"></div>

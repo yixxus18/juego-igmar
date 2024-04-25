@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('jugador2_id')->nullable()->constrained("users"); 
             $table->integer('barcos_destruidos_jugador1')->default(0);
             $table->integer('barcos_destruidos_jugador2')->default(0);
-            $table->boolean('turno')->default(1);
+            $table->boolean('turno')->default(0);
             $table->integer('velocidad')->default(1);
             $table->timestamps();
         });

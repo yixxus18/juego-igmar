@@ -66,6 +66,8 @@ Route::group([
    Route::post('/juegos', [JuegoController::class, 'store']);
 
    Route::put('/juegos/{id}', [JuegoController::class, 'update']);
+   // routes/api.php
+Route::post('/partida/{partidaId}/desconexion/{jugadorId}', 'PartidaController@jugadorSeDesconecto');
 });
 
 

@@ -13,14 +13,14 @@ export class Auth2Guard implements CanActivate {
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
     const token = localStorage.getItem('token');
     if (!token) {
-      this.router.navigate(['/index/login']);
+      this.router.navigate(['/login']);
       return false;
     }
     try {
       const isAuth = await this.authService.verifyToken(token).toPromise()
       return isAuth
     } catch (error) {
-      return this.router.createUrlTree(['/index/login'])
+      return this.router.createUrlTree(['/login'])
     }
   }
 }

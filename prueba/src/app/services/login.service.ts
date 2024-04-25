@@ -3,7 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Login } from '../Interfaces/login';
 import { User } from '../Interfaces/user-interface';
-
+import { environment } from '../../environments/environment';
+interface environment {
+  apiUrl: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -22,11 +25,10 @@ export class LoginService {
   }
   
   login(email: string, password: string): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/login';
+    const url = `${environment.apiUrl}/login`;
     return this.http.post<Login>(url, { email, password });
   }
 
-  // Obtener y setear token
   setToken(token: string|null){
     this.token = token
   }
@@ -40,23 +42,23 @@ export class LoginService {
   }
 
   Verificar(): Observable<any> {
-    let url = 'http://192.168.1.8:8000/api/auth/me'
+    let url = `${environment.apiUrl}/me`
     return this.http.post<any>(url, null)
   }
 
 
   register(user: User): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/register';
+    const url = `${environment.apiUrl}/register`;
     return this.http.post<User>(url, user);
   }
   
   verificarToken(token: string): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/verify';
+    const url = `${environment.apiUrl}/verify`;
     return this.http.post<any>(url, { token });
   }
 
   me(token: string): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/me';
+    const url = `${environment.apiUrl}/me`;
     return this.http.post<any>(url, { token });
   }
   

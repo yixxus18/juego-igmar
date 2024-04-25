@@ -4,7 +4,10 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { UserRegister } from '../Interfaces/register';
 import { User } from '../Interfaces/user-interface';
 import { CreateUser } from '../Interfaces/create-user';
-
+import { environment } from '../../environments/environment';
+interface environment {
+  apiUrl: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -14,17 +17,17 @@ export class UsersService {
   private apiUrl = 'http://192.168.1.8:8000/api/auth';
   
   register(user: UserRegister): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/register';
+    const url = `${environment.apiUrl}/register`;
     return this.http.post<UserRegister>(url, user);
   }
 
   getUsers(): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/get';
+    const url = `${environment.apiUrl}/get`;
     return this.http.get<any>(url);
   }
 
   addUser(user: CreateUser, token: string): Observable<any> {
-    const url = 'http://192.168.1.8:8000/api/auth/post';
+    const url = `${environment.apiUrl}/post`;
     const headers = new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -34,13 +37,13 @@ export class UsersService {
 
 
   editUser(userId: number, user: User, token: string): Observable<any> {
-    const url = `${this.apiUrl}/put/${userId}`;
+    const url = `${environment.apiUrl}/put/${userId}`;
     return this.http.put<any>(url, user, { headers: { Authorization: `Bearer ${token}` } });
   }
   
 
   deleteUser(userId: number, token: string): Observable<any> {
-    const url = `${this.apiUrl}/delete/${userId}`;
+    const url = `${environment.apiUrl}/delete/${userId}`;
     return this.http.delete<any>(url, { headers: { Authorization: `Bearer ${token}` } });
   }
 
