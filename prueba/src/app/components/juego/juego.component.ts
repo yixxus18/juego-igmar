@@ -8,49 +8,77 @@ import { LoginService } from '../../services/login.service';
 import { User } from '../../Interfaces/user-interface';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+
+const SLIDE_ANIMATION_DURATION = '2000ms';
+
+export interface GameStateUpdate {
+  juego: {
+    id: number;
+    jugador1_id: number;
+    jugador2_id: number;
+    turno: number;
+    barcos_destruidos_jugador1: number;
+    barcos_destruidos_jugador2: number;
+  };
+}
 @Component({
   selector: 'app-juego',
   standalone: true,
   templateUrl: './juego.component.html',
   styleUrls: ['./juego.component.css'],
-  imports: [RouterModule,CommonModule],
+  imports: [RouterModule, CommonModule],
   animations: [
     trigger('slideInOut', [
-      state('enter', style({ transform: 'translateX(-100%)', display: 'block' })),
-      state('exit', style({ transform: 'translateX(100%)', display: 'none' })),
-      transition('enter => exit', [
-        animate(JuegoComponent.tiempoAnimacion + 's ease-out', style({ transform: 'translateX(100%)' })),
+      state('enter', style({ transform: 'translateX(-150%)', opacity: 0 })),
+      state('exit', style({ transform: 'translateX(150%)', opacity: 0 })),
+      transition('enter => exit', [animate(SLIDE_ANIMATION_DURATION + ' ease-out')]),
+      transition('exit => enter', [animate(SLIDE_ANIMATION_DURATION + ' ease-in')]),
+    ]),
+    trigger('explosionAnim', [
+      state('void', style({ opacity: 0, transform: 'scale(0.5)' })),
+      state('*', style({ opacity: 1, transform: 'scale(1)' })),
+      transition('void => *', [animate('300ms ease-out')]),
+      transition('* => void', [animate('300ms ease-in')]),
+    ]),
+    trigger('shipHitAnim', [
+      state('hit', style({ transform: 'rotate(-5deg) scale(1.1)', filter: 'brightness(1.5)' })),
+      transition('* => hit', [
+        animate('150ms ease-out', style({ transform: 'rotate(5deg) scale(1.1)', filter: 'brightness(1.5)' })),
+        animate('150ms ease-in')
       ]),
-      transition('exit => enter', [
-        animate('0s')
-      ])
-    ])
+    ]),
   ]
 })
 export class JuegoComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   estado = 'enter';
   animacionActiva = true;
   bombasRestantes = 2;
   barcosDestruidos = 0;
-  static tiempoAnimacion: number = 2;
   idPartida: number = 1;
   idJugador: number = 0;
   datosActualizar: any = {};
   userData: User | null = null;
-  e: any;
+  latestGameStateUpdate: GameStateUpdate | null = null;
   echo: Echo | undefined;
-explosion = false;
+  explosion = false;
+  isLoading: boolean = false;
+  readonly animationDurationMs = 2000;
+  shipState: string = 'normal';
 
-  constructor(private elRef: ElementRef, private router: Router, private PartidaService: PartidaService, private loginService: LoginService ,  private cdRef: ChangeDetectorRef) {
-    
+  constructor(private elRef: ElementRef, private router: Router, private PartidaService: PartidaService, private loginService: LoginService, private cdRef: ChangeDetectorRef) {
+
   }
 
   setupWebSocket(): void {
     (window as any).Pusher = Pusher;
     this.echo = new Echo({
       broadcaster: 'pusher',
-      key: '123',
-      cluster: 'mt1',
+      key: environment.pusherKey,
+      cluster: environment.pusherCluster,
       encrypted: false,
       wsHost: window.location.hostname,
       wsPort: 6001,
@@ -59,36 +87,37 @@ explosion = false;
     });
 
     this.echo.channel('nuevojuego').listen('.App\\Events\\ActualizacionJuego', (data: any) => {
-      this.e = data;
-      console.log(this.e);
-      this.idPartida = this.e.juego.id;
+      this.latestGameStateUpdate = data as GameStateUpdate;
+      console.log(this.latestGameStateUpdate);
+      if (this.latestGameStateUpdate && this.latestGameStateUpdate.juego) {
+        this.idPartida = this.latestGameStateUpdate.juego.id;
       
-      console.log(this.idJugador);
+        console.log(this.idJugador);
     
-      if (this.esMiTurno()) {
-        this.animacionActiva = true;
-        this.toggleAnimation();
-      }
+        if (this.esMiTurno()) {
+          this.animacionActiva = true;
+          this.toggleAnimation();
+        }
 
-      if (this.e.juego.barcos_destruidos_jugador1 === 6){
-        this.reiniciarJuego();
-        alert('Se acabo el juego!');
-        this.router.navigate(['index']);
-      }
+        if (this.latestGameStateUpdate.juego.barcos_destruidos_jugador1 === 6) {
+          this.reiniciarJuego();
+          alert('Se acabo el juego!');
+          this.router.navigate(['index']);
+        }
 
-      if (this.e.juego.barcos_destruidos_jugador2 === 6){
-        this.reiniciarJuego();
-        alert('Se acabo el juego!');
-        this.router.navigate(['index']);
+        if (this.latestGameStateUpdate.juego.barcos_destruidos_jugador2 === 6) {
+          this.reiniciarJuego();
+          alert('Se acabo el juego!');
+          this.router.navigate(['index']);
+        }
       }
-
     });
-    
   }
 
   esMiTurno(): boolean {
-    return (this.idJugador === this.e.juego.jugador1_id && this.e.juego.turno === 1) ||
-           (this.idJugador === this.e.juego.jugador2_id && this.e.juego.turno === 0);
+    if (!this.latestGameStateUpdate) return false;
+    return (this.idJugador === this.latestGameStateUpdate.juego.jugador1_id && this.latestGameStateUpdate.juego.turno === 1) ||
+           (this.idJugador === this.latestGameStateUpdate.juego.jugador2_id && this.latestGameStateUpdate.juego.turno === 0);
   }
 
   closeWebSocket(): void {
@@ -104,20 +133,23 @@ explosion = false;
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.closeWebSocket();
   }
 
   onAnimationDone(): void {
     this.explosion = false;
     this.barcoGolpeado = false;
-    if (this.idJugador === this.e.juego.jugador1_id) {
-      this.datosActualizar = { turno: 0 , barcos_destruidos_jugador1: this.barcosDestruidos };
-    } else if (this.idJugador === this.e.juego.jugador2_id) {
-      this.datosActualizar = { turno: 1 , barcos_destruidos_jugador2: this.barcosDestruidos};
+    if (!this.latestGameStateUpdate) return;
+
+    if (this.idJugador === this.latestGameStateUpdate.juego.jugador1_id) {
+      this.datosActualizar = { turno: 0, barcos_destruidos_jugador1: this.barcosDestruidos };
+    } else if (this.idJugador === this.latestGameStateUpdate.juego.jugador2_id) {
+      this.datosActualizar = { turno: 1, barcos_destruidos_jugador2: this.barcosDestruidos };
     }
 
     this.actualizarPartida();
-
     this.animacionActiva = true;
   }
 
@@ -131,51 +163,39 @@ explosion = false;
   barcoGolpeado = false;
 
   golpearBarco(event: Event) {
-
     if (this.barcoGolpeado) {
-      return; // Si el barco ya ha sido golpeado, no hagas nada
+      return; 
     }
   
     this.barcoGolpeado = true;
     this.explosion = true;
+    this.shipState = 'hit';
+    setTimeout(() => this.shipState = 'normal', 300);
+
     event.stopPropagation();
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
       this.barcosDestruidos += 1;
       
-      
       if (this.barcosDestruidos === 6) {
-        
-        
         alert('¡Ganaste!');
-        
-        this.router.navigate(['index']);
-      } else {
-        
-      }
-
-      if (this.e.juego.barcos_destruidos_jugador1 === 6 || this.e.juego.barcos_destruidos_jugador1 === 6 ){
-
         this.router.navigate(['index']);
       }
-    } else {
-      
+
+      if (this.latestGameStateUpdate && (this.latestGameStateUpdate.juego.barcos_destruidos_jugador1 === 6 || this.latestGameStateUpdate.juego.barcos_destruidos_jugador2 === 6)) {
+        this.router.navigate(['index']);
+      }
     }
   }
 
   intentos() {
-    
     if (this.bombasRestantes > 0) {
       this.bombasRestantes -= 1;
-    } else {
-      
     }
   }
 
-   
-
   @HostListener('document:click', ['$event'])
-  clickout(event: MouseEvent) { // Especifica el tipo de event como MouseEvent
+  clickout(event: MouseEvent) { 
     if (this.elRef.nativeElement.contains(event.target as Node)) {
       this.intentos();
     }
@@ -184,23 +204,21 @@ explosion = false;
   getjuego() {
     const token = localStorage.getItem('token');
     if (token) {
-      this.PartidaService.getJuego(token).subscribe(
+      this.PartidaService.getJuego(token).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
           console.log(response);
-          
         },
         (error) => {
           console.error(error);
         }
       );
-      
     }
   }
 
   enviarjuego() {
     const token = localStorage.getItem('token');
     if (token) {
-      this.PartidaService.enviarjuego(token).subscribe(
+      this.PartidaService.enviarjuego(token).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
           console.log(response);
         },
@@ -212,9 +230,9 @@ explosion = false;
   }
 
   actualizarPartida(): void {
-    const token = localStorage.getItem('token'); // Obtén el token de donde corresponda
+    const token = localStorage.getItem('token'); 
     if (token) {
-      this.PartidaService.actualizarPartida(token, this.idPartida, this.datosActualizar).subscribe(
+      this.PartidaService.actualizarPartida(token, this.idPartida, this.datosActualizar).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
           
         },
@@ -223,17 +241,16 @@ explosion = false;
         }
       );
     }
-    
   }
 
   getUserData() {
     const token = localStorage.getItem('token');
     if (token) {
-      this.loginService.me(token).subscribe(
+      this.loginService.me(token).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
-          this.userData = response.user; // Accede a la propiedad 'user' de la respuesta
+          this.userData = response.user; 
           if (this.userData) {
-            this.idJugador = this.userData.id; // Asigna el ID del usuario al idJugador si this.userData no es nulo
+            this.idJugador = this.userData.id; 
             console.log(this.idJugador);
           }
         },
@@ -249,7 +266,6 @@ explosion = false;
     this.animacionActiva = true;
     this.bombasRestantes = 2;
     this.barcosDestruidos = 0;
-    JuegoComponent.tiempoAnimacion = 2;
+    // JuegoComponent.tiempoAnimacion = 2; // This line is removed
   }
-
 }

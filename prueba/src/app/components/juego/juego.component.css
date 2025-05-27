@@ -1,3 +1,28 @@
+h1, h2 {
+    font-family: 'Special Elite', Courier, monospace; /* Fuente de estilo militar */
+    text-align: center; /* Centra el texto */
+    font-size: 3em; /* Aumenta aún más el tamaño del texto */
+    color: #ffffff; /* Un color dorado, puedes ajustarlo a lo que prefieras */
+    text-shadow: 2px 2px 4px #000000; /* Añade una sombra para darle un efecto más dramático */
+    margin-top: 20px; /* Añade una distancia desde el borde superior de 20px */
+}
+
+.container {
+    text-align: center; /* Asegura que todo dentro del contenedor esté centrado */
+    /* The :host style provides the overall page background (rgb(6, 12, 36)). */
+    /* If a specific black background for .container is needed, add: background-color: #000; */
+}
+
+.explosion-image {
+    width: 100px; /* Or preferred size */
+    height: 100px; /* Or preferred size */
+    position: absolute; /* Or relative, depending on desired placement */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centering if absolute */
+    z-index: 10; /* Ensure it's above other elements if needed */
+}
+
 .barco {
   position: absolute;
   top: 135px;
@@ -89,27 +114,4 @@
   height: 100vh;
   background-color: rgb(6, 12, 36);
   overflow: hidden;
-}
-
-h1, h2 {
-  font-family: 'Special Elite', Courier, monospace;
-  text-align: center;
-  font-size: 3em;
-  color: #ffffff;
-  text-shadow: 2px 2px 4px #000000;
-  margin-top: 20px;
-}
-
-/* Aquí están las nuevas clases de animación */
-@keyframes slideInOut {
-0% { transform: translateX(-100%); }
-100% { transform: translateX(100%); }
-}
-
-.slideInOut2s {
-animation: slideInOut 2s ease-out infinite alternate;
-}
-
-.slideInOut1s {
-animation: slideInOut 1s ease-out infinite alternate;
 }

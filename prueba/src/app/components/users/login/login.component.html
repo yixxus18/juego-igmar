@@ -1,6 +1,6 @@
 <div class="login-container">
     
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form [formGroup]="loginForm" (ngSubmit)="login()" @formEntry>
       <h2>Iniciar sesión</h2>
   
       <div class="form-group">
@@ -22,18 +22,24 @@
           </div>
       </div>
   
-      <button type="submit" [disabled]="!loginForm.valid" >Iniciar sesión</button>
-      <div *ngIf="loginMessage" [class.message-success]="state" [class.message-error]="!state" class="message">
+      <button type="submit" [disabled]="!loginForm.valid || isLoading" [@loadingButton]="isLoading ? 'loading' : 'idle'">
+        <span *ngIf="!isLoading">Iniciar sesión</span>
+        <span *ngIf="isLoading">Cargando...</span>
+      </button>
+
+      <div *ngIf="loginMessage" 
+           [@messageAnimation]
+           [class.message-success]="isLoginSuccessful === true" 
+           [class.message-error]="isLoginSuccessful === false" 
+           class="message">
         {{ loginMessage }}
       </div>
 
-      <div *ngIf="registerMessage" class="contendor" style="background-color: greenyellow;">
+      <div *ngIf="registerMessage" [@messageAnimation] class="message message-register-success">
         {{ registerMessage }}
       </div>
+      
       <p></p>
       <a style="text-align: center;" [routerLink]="['/register']" routerLinkActive="router-link-active">Registrate aqui.</a>
     </form>
-
-    
-  </div>
-  
+</div>

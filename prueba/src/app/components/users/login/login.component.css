@@ -1,5 +1,12 @@
 /* Estilo actualizado con el diseño del registro */
 
+.message-register-success {
+  background-color: greenyellow; /* Or a more theme-consistent success color */
+  color: #333; /* Adjust text color for readability on greenyellow */
+  /* It already has .message class, so padding, margin, text-align etc. should be inherited */
+  /* Add any specific styles if needed */
+}
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -20,6 +27,9 @@
   margin-right: auto;
 }
 
+/* .contenedor class seems to be a duplicate or alternative for .message-success / .message-error,
+   If .contenedor is not used in any HTML, it can be removed.
+   For now, it's left as is. */
 .contenedor {
   text-align: center;
   margin-top: 20px;
