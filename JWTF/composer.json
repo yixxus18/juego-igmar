@@ -9,11 +9,9 @@
         "beyondcode/laravel-websockets": "^1.14",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
-        "jenssegers/mongodb": "^3.9",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "mongodb/mongodb": "^1.12",
         "php-open-source-saver/jwt-auth": "^2.1"
     },
     "require-dev": {

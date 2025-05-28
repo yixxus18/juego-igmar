@@ -22,17 +22,6 @@ use Illuminate\Support\Facades\Mail;
 });*/
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CategoriasController;
-use App\Http\Controllers\DispositivosController;
-use App\Http\Controllers\ReparacionesController;
-use App\Http\Controllers\ReparacionDispositivoController;
-use App\Http\Controllers\AccesoriosController;
-use App\Http\Controllers\OrdenVentaController;
-use App\Http\Controllers\OrdenVentaAccesorioController;
-use App\Http\Controllers\CitasController;
-use App\Http\Controllers\IngresoReparacionesController;
-use App\Http\Controllers\LogHistoryController;
-use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\JuegoController;
 

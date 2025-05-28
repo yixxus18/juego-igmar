@@ -11,7 +11,7 @@ class ResultadosController extends Controller
 {
     public function store(Request $request)
 {
-    $user = Auth::user(); // Obtener el usuario autenticado a partir del token
+    $user = Auth::user();
 
     if (!$user) {
         return response()->json(["msg" => "Usuario no encontrado"], 404);

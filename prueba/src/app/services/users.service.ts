@@ -14,8 +14,8 @@ interface environment {
 export class UsersService {
 
   constructor(private http: HttpClient) { }
-  private apiUrl = 'http://192.168.1.8:8000/api/auth';
-  
+  private apiUrl = 'http://127.0.0.1:8000/api/auth';
+
   register(user: UserRegister): Observable<any> {
     const url = `${environment.apiUrl}/register`;
     return this.http.post<UserRegister>(url, user);
@@ -40,7 +40,7 @@ export class UsersService {
     const url = `${environment.apiUrl}/put/${userId}`;
     return this.http.put<any>(url, user, { headers: { Authorization: `Bearer ${token}` } });
   }
-  
+
 
   deleteUser(userId: number, token: string): Observable<any> {
     const url = `${environment.apiUrl}/delete/${userId}`;

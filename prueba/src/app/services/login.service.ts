@@ -12,7 +12,7 @@ interface environment {
 })
 
 export class LoginService {
-  private loginURL = "http://192.168.1.8:8000/api/auth/login";
+  private loginURL = "http://127.0.0.1:8000/api/auth/login";
   private token: string|null = null;
   private static instance: LoginService
 
@@ -23,7 +23,7 @@ export class LoginService {
   public static getInstance(): LoginService{
     return LoginService.instance
   }
-  
+
   login(email: string, password: string): Observable<any> {
     const url = `${environment.apiUrl}/login`;
     return this.http.post<Login>(url, { email, password });
@@ -51,7 +51,7 @@ export class LoginService {
     const url = `${environment.apiUrl}/register`;
     return this.http.post<User>(url, user);
   }
-  
+
   verificarToken(token: string): Observable<any> {
     const url = `${environment.apiUrl}/verify`;
     return this.http.post<any>(url, { token });
@@ -61,6 +61,6 @@ export class LoginService {
     const url = `${environment.apiUrl}/me`;
     return this.http.post<any>(url, { token });
   }
-  
+
 
 }

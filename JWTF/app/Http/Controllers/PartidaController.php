@@ -52,7 +52,7 @@ public function resultados(Request $request)
     if (!$user) {
         return response()->json(["msg" => "Usuario no encontrado"], 404);
     }
-    
+
     $partidas = Juego::with(['jugador1', 'jugador2']) // Cargar las relaciones para evitar N+1 queries
                     ->where(function($query) use ($user) {
                         $query->where('jugador1_id', $user->id)
@@ -75,9 +75,6 @@ public function resultados(Request $request)
 
     return response()->json($resultados, 200);
 }
-
-
-    // Este es un ejemplo conceptual, necesitarás adaptarlo a tu lógica de aplicación
 public function jugadorSeDesconecto($jugadorId, $partidaId)
 {
     event(new PartidaGanadaPorDesconexion($partidaId));
